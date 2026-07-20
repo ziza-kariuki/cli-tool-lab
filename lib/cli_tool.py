@@ -1,7 +1,7 @@
 # cli_tool.py
 
 import argparse
-from models import Task, User
+from lib.models import Task, User 
 
 # Global dictionary to store users and their tasks
 users = {}
@@ -16,6 +16,7 @@ def add_task(args):
      # Create a new Task with the given title
     task = Task(args.title)
     user.add_task(task)
+    print(f"📌 Task '{args.title}' added to {args.user}.")
 
 def complete_task(args):
     # Look up the user by name
