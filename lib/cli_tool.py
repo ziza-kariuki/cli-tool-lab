@@ -6,20 +6,38 @@ from models import Task, User
 # Global dictionary to store users and their tasks
 users = {}
 
-# TODO: Implement function to add a task for a user
-def add_task(args):
-    # - Check if the user exists, if not, create one
-    # - Create a new Task with the given title
-    # - Add the task to the user's task list
-    pass
+alice = User("Alice")
+unit_test_task = Task("Write unit tests")
+alice.add_task(unit_test_task)
 
-# TODO: Implement function to mark a task as complete
+users["Alice"] = alice
+
+def add_task(args):
+     # Check if the user exists, if not, create one
+    user = users.get(args.user)
+    if user is None:
+        user = User(args.user)
+        users[args.user] = user
+        
+     # Create a new Task with the given title
+    task = Task(args.title)
+    user.add_task(task)
+
 def complete_task(args):
-    # - Look up the user by name
-    # - Look up the task by title
-    # - Mark the task as complete
-    # - Print appropriate error messages if not found
-    pass
+    # Look up the user by name
+    user = users.get(args.user)
+
+    if user:
+        for task in user.tasks:
+            # Look up the task by title
+            if task.title == args.title:
+                # Mark the task as complete
+                task.complete()
+                return
+        print("❌ Task not found.")
+    else:
+        print("❌ User not found.")
+
 
 # CLI entry point
 def main():
@@ -43,6 +61,7 @@ def main():
         args.func(args)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()
